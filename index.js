@@ -42,7 +42,7 @@ PlayerIO.authenticate(
                 obj.version++
 
                 var result = UglifyJS.minify(req.body.code,{ warnings: true });
-                obj.code=result.code
+                obj.code=result.code.replaceAll("let ", 'var ');
 
                 obj.save()
                 res.send(result.error||result.warnings||"ok")
