@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Archivo JS</title>
+</head>
+<body>
+    <h1>Sube un archivo JS</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" accept=".js" required>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async function(event) {
+                    const code = event.target.result;
+
+                    // Enviar el archivo como un string al servidor
+                    const response = await fetch('/save/'+file.name, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ code })
+                    });
+
+                    const result = await response.text();
+                    alert(result);
+                };
+
+                reader.readAsText(file);
+            }
+        });
+    </script>
+</body>
+</html>
