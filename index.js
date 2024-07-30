@@ -41,11 +41,11 @@ PlayerIO.authenticate(
                 }
                 obj.version++
 
-                var result = UglifyJS.minify(req.body.code);
+                var result = UglifyJS.minify(req.body.code,{ warnings: true });
                 obj.code=result.code
 
                 obj.save()
-                res.send(result.error||"ok")
+                res.send(result.error||result.warnings||"ok")
             }, function(error) {res.send(error) });
         })
         
