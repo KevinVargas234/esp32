@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.19.2",
+    "uglify-js": "^3.19.1",
     "xmlhttprequest": "^1.8.0"
   }
 }

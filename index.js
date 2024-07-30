@@ -5,6 +5,7 @@ const port = process.env.PORT||8000
 const path = require('path');
 const PlayerIO=require("./pio")
 const bodyParser = require('body-parser');
+var UglifyJS = require("uglify-js");
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
@@ -39,9 +40,12 @@ PlayerIO.authenticate(
                     obj.version=0
                 }
                 obj.version++
-                obj.code=req.body.code
+
+                var result = UglifyJS.minify(req.body.code);
+                obj.code=result.code
+
                 obj.save()
-                res.send("ok")
+                res.send(result.error||"ok")
             }, function(error) {res.send(error) });
         })
         
